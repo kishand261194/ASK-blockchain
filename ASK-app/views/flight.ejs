@@ -1,0 +1,40 @@
+<% include partials/head.ejs %>
+<body>
+  <% include partials/nav.ejs %>
+  <section class="main-container">
+  <div class="container">
+    <div class="row col-md-12">
+      <h1 class="title">Ours Flights</h1>
+      <% if (docs.length > 0) { %>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>flightNumber</th>
+              <th>totalSeats</th>
+              <th>filledSeat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% docs.forEach( flight => { %>
+              <tr>
+                <td><%= flight.flightNumber %></td>
+                <td><%= flight.totalSeats %></td>
+                <td><%= flight.filledSeat %></td>
+                <td>
+                   <a href="edit/<%= flight._id %>"><input type="button" class="btn btn-info" value="Edit"></a>
+                   <input type="button" class="btn btn-danger btn-delete" value="Remove" data-id="<%= flight._id %>">
+                 </td>
+             </tr>
+            <% }); %>
+          </tbody>
+        </table>
+        <% } else {  %>
+          <h4>There are no flights yet!</h4>
+        <% } %>
+        </div>
+
+    </div>
+  </section>
+  <% include partials/scripts.ejs %>
+</body>
+</html>

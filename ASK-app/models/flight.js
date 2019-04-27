@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
-var flightSchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+
+const flightsSchema = Schema({
     flightNumber: {
         type: String,
         required: 'This field is required.',
@@ -19,4 +21,4 @@ var flightSchema = new mongoose.Schema({
 });
 
 
-mongoose.model('Flight', flightSchema);
+mongoose.model('Flight', flightsSchema);
