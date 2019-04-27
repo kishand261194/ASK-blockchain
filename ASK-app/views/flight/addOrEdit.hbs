@@ -1,0 +1,27 @@
+<h3>{{viewTitle}}</h3>
+
+<form action="/flight" method="POST" autocomplete="off">
+    <input type="hidden" name="_id" value="{{flight._id}}">
+    <div class="form-group">
+        <label>Flight Number</label>
+        <input type="text" class="form-control" name="flightNumber" placeholder="Flight Number" value="{{flight.flightNumber}}">
+        <div class="text-danger">
+            {{flight.fullNameError}}</div>
+    </div>
+    <div class="form-group">
+        <label>Total Seats</label>
+        <input type="text" class="form-control" name="totalSeats" placeholder="Total Seats" value="{{flight.totalSeats}}">
+        <div class="text-danger">
+            {{flight.emailError}}</div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Filled Seats</label>
+            <input type="text" class="form-control" name="filledSeat" placeholder="Filled Seats" value="{{flight.filledSeat}}">
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-info"><i class="fa fa-database"></i> Submit</button>
+        <a class="btn btn-secondary" href="/flight/list"><i class="fa fa-list-alt"></i> View All</a>
+    </div>
+</form>

@@ -1,0 +1,80 @@
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+.bg {
+
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 25px;
+}
+
+
+.top {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.value
+{
+transform: translate(-50%, -50%);
+position: absolute;
+text-align: center;
+width: 30px;
+}
+
+.buttons {
+  margin-left: 15px;
+  font-family: "Courier New", Courier, monospace;
+  font-style: bold;
+  font-size: 25px;
+  background:#1AAB8A;
+  color:#fff;
+  border:none;
+  cursor:pointer;
+  transition:800ms ease all;
+  outline:none;
+
+}
+
+.three-buttons {
+     margin-top: 30px;
+     position: relative;
+     display: table;
+     margin: 0 auto;
+}
+
+#incInput,#decInput,#initInput
+{
+ height:22px;
+ width: 40px;
+ border:1px solid black;
+ 
+}
+
+#incInput,#decInput
+{
+  margin-left: 25px;
+}
+hr {
+  margin: auto;
+  width: 40%;
+
+}
+
+#initInput
+{
+  margin-left: 10px;
+}
+
+button:hover{
+  background:#fff;
+  color:#1AAB8A;
+}
