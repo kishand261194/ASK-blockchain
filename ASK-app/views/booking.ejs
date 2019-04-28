@@ -1,8 +1,8 @@
 <% include partials/head.ejs %>
 <body>
   <% include partials/nav.ejs %>
-    <h4 class="title">Flight Bookings of <%= docs[0].airline %></h4>
       <% if (docs.length > 0) { %>
+            <h4 class="title">Flight Bookings of <%= docs[0].airline %></h4>
         <table class="table table-hover">
           <thead>
             <tr>
@@ -10,6 +10,8 @@
               <th>Fight Number</th>
               <th>No. seats</th>
               <th>Airline</th>
+              <th>Request to (Airline Flight)</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -20,9 +22,29 @@
                 <td><%= booking.seats %></td>
                 <td><%= booking.airline %></td>
                 <td>
-                   <a href="edit/<%= booking._id %>"><input type="button" class="btn btn-info" value="Edit"></a>
-                   <input type="button" class="btn btn-danger btn-delete" value="Remove" data-id="<%= booking._id %>">
-                 </td>
+                    <% for(var i=0; i < docs2.length; i++) { %>
+                       <form action="/saverequest" method="POST" id="<%= i %>">
+                         <div class="form-group">
+                           <input type="hidden" class="form-control" name="fromAirline" value="<%= docs[0].airline %>"/>
+                         </div>
+                         <div class="form-group">
+                           <input type="hidden" class="form-control" name="toAirline" value="<%= docs2[i].airline %>"/>
+                         </div>
+                         <div class="form-group">
+                           <input type="hidden" class="form-control" name="flightNumber" value="<%= docs2[i].flightNumber %>"/>
+                         </div>
+                         <div class="form-group">
+                           <input type="hidden" class="form-control" name="seats" value="<%= booking.seats %>"/>
+                         </div>
+                         <div class="form-group">
+                           <input type="hidden" class="form-control" name="bookingId" value="<%= booking._id %>"/>
+                         </div>
+                         <div class="form-group">
+                           <input type="submit" id="<%= i %>" class="btn btn-primary" value="<%= docs2[i].airline + ' ' + docs2[i].flightNumber %>"/>
+                         </div>
+                        </form>
+                    <% } %>
+                </td>
              </tr>
             <% }); %>
           </tbody>

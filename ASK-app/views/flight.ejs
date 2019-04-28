@@ -1,8 +1,8 @@
 <% include partials/head.ejs %>
 <body>
   <% include partials/nav.ejs %>
-      <h4 class="title"><%= docs[0].airline %> flights</h4>
       <% if (docs.length > 0) { %>
+          <h4 class="title"><%= docs[0].airline %> flights</h4>
         <table class="table table-hover">
           <thead>
             <tr>

@@ -6,3 +6,4 @@ mongoose.connect('mongodb+srv://kishan:blockchain@cluster0-rjmfr.mongodb.net/air
 });
 require('./flight');
 require('./booking');
+require('./request');
