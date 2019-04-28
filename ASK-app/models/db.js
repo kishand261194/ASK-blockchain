@@ -5,3 +5,4 @@ mongoose.connect('mongodb+srv://kishan:blockchain@cluster0-rjmfr.mongodb.net/air
     else { console.log('Error in DB connection : ' + err) }
 });
 require('./flight');
+require('./booking');

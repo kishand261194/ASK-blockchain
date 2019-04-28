@@ -16,6 +16,10 @@ const flightsSchema = Schema({
         type: Number,
         required: 'This field is required.',
         default: 0
+    },
+    airline: {
+        type: String,
+        required: 'This field is required.',
     }
 
 });

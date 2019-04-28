@@ -1,0 +1,26 @@
+<% include partials/head.ejs %>
+<body>
+  <% include partials/nav.ejs %>
+  <h4 class="title">Add a new Booking</h4>
+
+    <form action="/savebooking" method="POST">
+      <div class="form-group">
+        <input type="text" class="form-control" name="customerId" placeholder="customerId"/>
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" name="flightNumber" placeholder="flightNumber"/>
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" name="seats" placeholder="seats"/>
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" name="airline" name="airline" value="<%= airline %>" disabled/>
+      </div>
+      <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Save!"/>
+      </div>
+    </form>
+
+  <% include partials/scripts.ejs %>
+</body>
+</html>
