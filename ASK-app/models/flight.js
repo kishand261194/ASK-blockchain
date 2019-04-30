@@ -24,5 +24,4 @@ const flightsSchema = Schema({
 
 });
 
-
 mongoose.model('Flight', flightsSchema);

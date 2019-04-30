@@ -1,3 +1,5 @@
+<% include partials/head.ejs %>
+<body>
 <div class="row mt-5">
   <div class="col-md-6 m-auto">
     <div class="card card-body">
@@ -62,6 +64,13 @@
             value="<%= typeof airline != 'undefined' ? airline : '' %>"
           />
         </div>
+
+        <div class="row" id="register_div">
+          <div style="margin-left: 15px;">
+            <button class="btn btn-info" type="button" id="register">Register</button>
+          </div>
+        </div>
+
         <button type="submit" class="btn btn-primary btn-block">
           Register
         </button>
@@ -71,3 +80,4 @@
   </div>
 </div>
   <% include partials/scripts.ejs %>
+</body>

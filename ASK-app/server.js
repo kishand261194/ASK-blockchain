@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
-const expressLayouts = require('express-ejs-layouts');
 const express = require('express');
 // App
 const path = require('path');
@@ -14,13 +13,13 @@ const db = require('./models/db');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use('/public', express.static('public'));
-app.use(express.static(path.join(__dirname, '../ASK-blockchain/build/contracts')));
 // Configuration settings
-app.use(expressLayouts);
 app.set('view engine', 'ejs');
 // Variables
 const port = 3000;
 // Routes
+app.use(express.static(path.join(__dirname, '../ASK-blockchain/build/contracts')));
+app.use('/users', express.static(path.join(__dirname, '../ASK-blockchain/build/contracts')));
 
 app.use(
   session({

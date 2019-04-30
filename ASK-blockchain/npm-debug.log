@@ -1,0 +1,22 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/Cellar/node/11.14.0_1/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install' ]
+2 info using npm@2.15.5
+3 info using node@v11.14.0
+4 verbose readDependencies loading dependencies from /Users/dkishan/Desktop/SecondSemUB/blockchain/lab2/part3/ASK-blockchain/package.json
+5 error install Couldn't read dependencies
+6 verbose stack Error: ENOENT: no such file or directory, open '/Users/dkishan/Desktop/SecondSemUB/blockchain/lab2/part3/ASK-blockchain/package.json'
+7 verbose cwd /Users/dkishan/Desktop/SecondSemUB/blockchain/lab2/part3/ASK-blockchain
+8 error Darwin 17.7.0
+9 error argv "/usr/local/Cellar/node/11.14.0_1/bin/node" "/usr/local/bin/npm" "install"
+10 error node v11.14.0
+11 error npm  v2.15.5
+12 error path /Users/dkishan/Desktop/SecondSemUB/blockchain/lab2/part3/ASK-blockchain/package.json
+13 error code ENOPACKAGEJSON
+14 error errno -2
+15 error syscall open
+16 error package.json ENOENT: no such file or directory, open '/Users/dkishan/Desktop/SecondSemUB/blockchain/lab2/part3/ASK-blockchain/package.json'
+16 error package.json This is most likely not a problem with npm itself.
+16 error package.json npm can't find a package.json file in your current directory.
+17 verbose exit [ -2, true ]
