@@ -1,12 +1,11 @@
 <% include partials/head.ejs %>
 <body>
-  <% include partials/nav.ejs %>
+  <% include partials/navcust.ejs %>
       <% if (docs.length > 0) { %>
-            <h4 class="title">Flight Bookings of <%= docs[0].airline %></h4>
+            <h4 class="title">Flight Bookings of <%= docs[0].customerEmail %></h4>
         <table class="table table-hover">
           <thead>
             <tr>
-              <th>Customer Id</th>
               <th>Fight Number</th>
               <th>No. seats</th>
               <th>Airline</th>
@@ -17,7 +16,6 @@
           <tbody>
             <% docs.forEach( booking => { %>
               <tr>
-                <td><%= booking.customerId %></td>
                 <td><%= booking.flightNumber %></td>
                 <td><%= booking.seats %></td>
                 <td><%= booking.airline %></td>

@@ -4,6 +4,10 @@ mongoose.connect('mongodb+srv://kishan:blockchain@cluster0-rjmfr.mongodb.net/air
     if (!err) { console.log('MongoDB Connection Succeeded.') }
     else { console.log('Error in DB connection : ' + err) }
 });
-require('./flight');
+require('./aflight');
+require('./bflight');
 require('./booking');
-require('./request');
+require('./arequest');
+require('./brequest');
+require('./aresponse');
+require('./bresponse');

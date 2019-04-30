@@ -7,7 +7,7 @@
         <i class="fas fa-user-plus"></i> Register
       </h1>
       <% include ./partials/messages %>
-      <form action="/users/register" method="POST">
+      <form action="/users/registercust" method="POST">
         <div class="form-group">
           <label for="name">Name</label>
           <input
@@ -54,17 +54,27 @@
         </div>
 
         <div class="form-group">
-          <label for="airline">Airline</label>
-          <select class="form-control" id="airline" type="airline" name="airline" placeholder="Airline">
-              <option value="JetBlue">JetBlue</option>
-              <option value="SurfAir">SurfAir</option>
-          </select>
+          <label for="airline"></label>
+          <input
+            type="hidden"
+            id="airline"
+            name="airline"
+            class="form-control"
+            placeholder="Airline"
+            value="user"
+          />
         </div>
 
-        <div class="row" id="register_div">
-          <div style="margin-left: 15px;">
-            <button class="btn btn-info" type="button" id="register">Register</button>
-          </div>
+        <div class="form-group">
+          <label for="isairline"></label>
+          <input
+            type="hidden"
+            id="isairline"
+            name="isairline"
+            class="form-control"
+            placeholder="isAirline"
+            value="false"
+          />
         </div>
 
         <button type="submit" class="btn btn-primary btn-block">
@@ -75,5 +85,5 @@
     </div>
   </div>
 </div>
-  <% include partials/bcscripts.ejs %>
+  <% include partials/scripts.ejs %>
 </body>

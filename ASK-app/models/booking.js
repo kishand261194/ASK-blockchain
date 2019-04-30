@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const bookingsSchema = Schema({
-  customerId: {
-    type: Number,
+  customerEmail: {
+    type: String,
     required: true
   },
   flightNumber: {

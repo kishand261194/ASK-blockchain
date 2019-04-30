@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const requestsSchema = Schema({
+const brequestsSchema = Schema({
     fromAirline: {
         type: String,
         required: 'This field is required.',
@@ -30,4 +30,4 @@ const requestsSchema = Schema({
     }
 });
 
-mongoose.model('Request', requestsSchema);
+mongoose.model('Brequest', brequestsSchema);

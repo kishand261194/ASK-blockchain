@@ -1,0 +1,28 @@
+<% include partials/head.ejs %>
+<body>
+  <% include partials/nav.ejs %>
+  <% include ./partials/messages %>
+      <% if (docs.length > 0) { %>
+        <h4 class="title"><%= docs[0].toAirline %> reservation response</h4>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Booking Id</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% docs.forEach( response => { %>
+              <tr>
+                <td><%= response.bookingId %></td>
+                <td><%= response.status %></td>
+             </tr>
+            <% }); %>
+          </tbody>
+        </table>
+        <% } else {  %>
+          <h4>There are no response yet!</h4>
+        <% } %>
+  <% include partials/scripts.ejs %>
+</body>
+</html>
