@@ -1,24 +1,30 @@
 <% include partials/head.ejs %>
-<body>
-  <% include partials/nav.ejs %>
-  <h4 class="title">Add a new Flight</h4>
-      <form action="/save" method="POST">
-        <div class="form-group">
-          <input type="text" class="form-control" name="flightNumber" placeholder="flightNumber"/>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" name="totalSeats" placeholder="totalSeats"/>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" name="filledSeat" placeholder="filledSeat"/>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" name="airline" value="<%=airline%>" disabled/>
-        </div>
-        <div class="form-group">
-          <input type="submit" class="btn btn-primary" value="Save!"/>
-        </div>
-      </form>
-  <% include partials/scripts.ejs %>
+<% include partials/nav.ejs %>
+<body id='gif'>
+  <div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <div class="card card-body">
+          <h4 class="title">Add a new Flight</h4>
+              <form action="/save" method="POST">
+                <div class="form-group">
+                  <input type="text" class="form-control" name="flightNumber" placeholder="flightNumber"/>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="totalSeats" placeholder="totalSeats"/>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="filledSeat" placeholder="filledSeat"/>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="airline" value="<%=airline%>" disabled/>
+                </div>
+                <div class="form-group">
+                  <input type="submit" class="btn btn-primary" value="Save!"/>
+                </div>
+              </form>
+          <% include partials/scripts.ejs %>
+  </div>
+    </div>
+      </div>
 </body>
 </html>

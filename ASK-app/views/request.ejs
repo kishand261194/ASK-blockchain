@@ -1,7 +1,10 @@
 <% include partials/head.ejs %>
-<body>
+<body id='gif'>
   <% include partials/nav.ejs %>
   <% include ./partials/messages %>
+  <div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <div class="card card-body">
       <% if (docs.length > 0) { %>
         <h4 class="title"><%= docs[0].toAirline %> reservation request</h4>
         <table class="table table-hover">
@@ -34,6 +37,9 @@
         <% } else {  %>
           <h4>There are no requests yet!</h4>
         <% } %>
+      </div>
+        </div>
+          </div>
   <% include partials/scripts.ejs %>
 </body>
 </html>

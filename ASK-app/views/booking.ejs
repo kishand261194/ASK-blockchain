@@ -1,6 +1,9 @@
 <% include partials/head.ejs %>
-<body>
-  <% include partials/navcust.ejs %>
+<% include partials/navcust.ejs %>
+<body id='gif'>
+  <div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <div class="card card-body">
       <% if (docs.length > 0) { %>
             <h4 class="title">Flight Bookings of <%= docs[0].customerEmail %></h4>
         <table class="table table-hover">
@@ -50,7 +53,9 @@
         <% } else {  %>
           <center><h4>There are no bookings yet!</h4></center>
         <% } %>
-
-  <% include partials/scripts.ejs %>
+      </div>
+        </div>
+          </div>
+  <% include partials/bcscripts.ejs %>
 </body>
 </html>

@@ -1,6 +1,9 @@
 <% include partials/head.ejs %>
-<body>
+<body id='gif'>
   <% include partials/nav.ejs %>
+  <div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <div class="card card-body">
       <% if (docs.length > 0) { %>
           <h4 class="title"><%= docs[0].airline %> flights</h4>
         <table class="table table-hover">
@@ -30,6 +33,9 @@
         <% } else {  %>
           <h4>There are no flights yet!</h4>
         <% } %>
+      </div>
+        </div>
+          </div>
   <% include partials/scripts.ejs %>
 </body>
 </html>

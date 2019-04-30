@@ -1,26 +1,84 @@
 <% include partials/head.ejs %>
-<body>
-  <% include partials/navcust.ejs %>
-  <h4 class="title">Add a new Booking</h4>
+<% include partials/navcust.ejs %>
+<body id='gif'>
+  <div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <div class="card card-body">
+        <% if (aflight.length > 0) { %>
+            <h4 class="title">Available flights in JetBlue</h4>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Flight Number</th>
+                <th>Total Seats</th>
+                <th>Filled Seat</th>
+                <th>Airline</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% aflight.forEach( flight => { %>
+                <tr>
+                  <td><%= flight.flightNumber %></td>
+                  <td><%= flight.totalSeats %></td>
+                  <td><%= flight.filledSeat %></td>
+                  <td><%= flight.airline %></td>
+               </tr>
+              <% }); %>
+            </tbody>
+          </table>
+          <% } else {  %>
+            <h4>TThere are no flights available in JetBlue yet!</h4>
+          <% } %>
 
-    <form action="/savebooking" method="POST">
-      <div class="form-group">
-        <input type="text" class="form-control" name="flightNumber" placeholder="flightNumber"/>
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" name="seats" placeholder="seats"/>
-      </div>
-      <div class="form-group">
-        <select class="form-control"  name="airline">
-            <option value="JetBlue">JetBlue</option>
-            <option value="SurfAir">SurfAir</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <input type="submit" class="btn btn-primary" value="Save!"/>
-      </div>
-    </form>
+          <% if (bflight.length > 0) { %>
+              <h4 class="title">Available flights in SurfAir</h4>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Flight Number</th>
+                  <th>Total Seats</th>
+                  <th>Filled Seat</th>
+                  <th>Airline</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% bflight.forEach( flight => { %>
+                  <tr>
+                    <td><%= flight.flightNumber %></td>
+                    <td><%= flight.totalSeats %></td>
+                    <td><%= flight.filledSeat %></td>
+                    <td><%= flight.airline %></td>
+                 </tr>
+                <% }); %>
+              </tbody>
+            </table>
+            <% } else {  %>
+              <h4>There are no flights available in SurfAir yet!</h4>
+            <% } %>
 
-  <% include partials/scripts.ejs %>
+
+        <h4 class="title">Add a new Booking</h4>
+
+          <form action="/savebooking" method="POST">
+            <div class="form-group">
+              <input type="text" class="form-control" name="flightNumber" placeholder="flightNumber"/>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="seats" placeholder="seats"/>
+            </div>
+            <div class="form-group">
+              <select class="form-control"  name="airline">
+                  <option value="JetBlue">JetBlue</option>
+                  <option value="SurfAir">SurfAir</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <input type="submit" class="btn btn-primary" value="Save!"/>
+            </div>
+          </form>
+        </div>
+          </div>
+            </div>
+        <% include partials/bcscripts.ejs %>
 </body>
 </html>

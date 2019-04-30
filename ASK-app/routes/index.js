@@ -164,13 +164,24 @@ let addCust = (req, res) => {
 
 
 let loginRequest = (req, res, next) => {
-  passport.authenticate('local', {
-    successRedirect: '/index',
-    failureRedirect: '/users/login',
-    failureFlash: true
-  })(req, res, next);
-};
-
+  User.findOne({email: req.body.email}).then(docs => {
+    console.log(docs)
+    if(docs.airline == 'user'){
+      passport.authenticate('local', {
+        successRedirect: '/bookings',
+        failureRedirect: '/users/login',
+        failureFlash: true
+      })(req, res, next);
+    }
+   else{
+    passport.authenticate('local', {
+      successRedirect: '/requests',
+      failureRedirect: '/users/login',
+      failureFlash: true
+    })(req, res, next);
+    }
+  });
+  }
 let logout = (req, res) => {
   req.logout();
   req.flash('success_msg', 'You are logged out');
@@ -357,23 +368,46 @@ let add = (req, res) => {
 };
 
 let addbooking = (req, res) => {
-  let airline = req.user.airline;
-  res.render('addbooking', {airline})
+  Aflights.find().then( aflight => {
+    Bflights.find().then( bflight => {
+      let airline = req.user.airline;
+      res.render('addbooking', {airline, aflight, bflight})
+
+    })
+  })
 };
 
 let edit = (req, res) => {
   let id = req.params.flightNumber;
-  Flights.findById(id).then( flight => {
-    res.render('edit', {flight});
-  }, err => res.status(404).send('Error!'));
+  if(req.user.airline == 'JetBlue')
+  {
+    Aflights.findById(id).then( flight => {
+      res.render('edit', {flight});
+    }, err => res.status(404).send('Error!'));
+  }
+  else{
+    Bflights.findById(id).then( flight => {
+      res.render('edit', {flight});
+    }, err => res.status(404).send('Error!'));
+  }
 };
 
 let remove = (req, res) => {
   let id = req.params.flightNumber;
-  Flights.remove({ _id: id }).then( () => {
-    console.log('Removed');
-  }, err => console.log('Error on removing the flight'));
-  res.send('success');
+  if(req.user.airline == 'JetBlue')
+  {
+    Aflights.remove({ _id: id }).then( () => {
+      console.log('Removed');
+    }, err => console.log('Error on removing the flight'));
+    res.send('success');
+  }
+  else{
+    Bflights.remove({ _id: id }).then( () => {
+      console.log('Removed');
+    }, err => console.log('Error on removing the flight'));
+    res.send('success');
+
+  }
 };
 
 let notFound = (req, res) => res.render('404');
