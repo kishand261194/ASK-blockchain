@@ -17,16 +17,9 @@ const Bresponse = mongoose.model('Bresponse');
 
 let login = (req, res) => res.render('login');
 
-let index = (req, res) => {
-  if(req.user.airline == 'user'){
-    res.redirect('/bookings');
-  }else{
-    res.redirect('/requests')
-  }
-};
-
 let register = (req, res) => res.render('register');
 let registercust = (req, res) => res.render('registercust');
+let admin = (req, res) => res.render('admin');
 let addUser = (req, res) => {
   const { name, email, password, password2, airline } = req.body;
   let errors = [];
@@ -165,7 +158,6 @@ let addCust = (req, res) => {
 
 let loginRequest = (req, res, next) => {
   User.findOne({email: req.body.email}).then(docs => {
-    console.log(docs)
     if(docs.airline == 'user'){
       passport.authenticate('local', {
         successRedirect: '/bookings',
@@ -174,11 +166,21 @@ let loginRequest = (req, res, next) => {
       })(req, res, next);
     }
    else{
-    passport.authenticate('local', {
-      successRedirect: '/requests',
-      failureRedirect: '/users/login',
-      failureFlash: true
-    })(req, res, next);
+
+     if(docs.airline == 'admin'){
+       passport.authenticate('local', {
+         successRedirect: '/admin',
+         failureRedirect: '/users/login',
+         failureFlash: true
+       })(req, res, next);
+     }else{
+       passport.authenticate('local', {
+         successRedirect: '/requests',
+         failureRedirect: '/users/login',
+         failureFlash: true
+       })(req, res, next);
+
+     }
     }
   });
   }
@@ -296,6 +298,36 @@ let reject = (req, res) => {
 };
 
 
+
+let approve = (req, res) => {
+  if(req.user.airline == 'JetBlue'){
+        Brequests.update({_id: req.params.requestId}, {isReviewed: 'approved'}, err => {
+          if (!err) console.log('Updated!');
+        });
+    }
+  else{
+    Arequests.update({_id: req.params.requestId}, {isReviewed: 'approved'}, err => {
+      if (!err) console.log('Updated!');
+    });
+    }
+ res.redirect('/review');
+};
+
+let disapprove = (req, res) => {
+  if(req.user.airline == 'JetBlue'){
+        Brequests.update({_id: req.params.requestId}, {isReviewed: 'rejected'}, err => {
+          if (!err) console.log('Updated!');
+        });
+    }
+  else{
+    Arequests.update({_id: req.params.requestId}, {isReviewed: 'rejected'}, err => {
+      if (!err) console.log('Updated!');
+    });
+    }
+  res.redirect('/review');
+};
+
+
 let flights = (req, res) => {
   if(req.user.airline == 'JetBlue'){
     Aflights.find().then( docs => {
@@ -319,30 +351,40 @@ let flights = (req, res) => {
 
 let bookings = (req, res) => {
   Bookings.find({customerEmail: req.user.email}).then( docs => {
-    console.log(docs)
-    if (docs[0].airline == 'JetBlue'){
-      Bflights.find().then(docs2 => {
-              res.render('booking', {docs, docs2})
-        });
-      }
-    else{
-      Aflights.find().then(docs2 => {
-              res.render('booking', {docs, docs2})
-        });
-
+    if(docs.length == 0){
+      res.render('booking', {docs})
     }
-  }, err => console.log(err));
+      Bflights.find().then(docs2 => {
+        Aflights.find().then(docs3 => {
+                res.render('booking', {docs, docs2, docs3})
+          });
+        });
+      }, err => console.log(err));
 };
 
 
 let requests = (req, res) => {
   if(req.user.airline == 'JetBlue'){
-    Arequests.find().then( docs => {
+    Arequests.find({isReviewed: 'approved'}).then( docs => {
       res.render('request', {docs})
     }, err => console.log(err));
   }else{
-    Brequests.find().then( docs => {
+    Brequests.find({isReviewed: 'approved'}).then( docs => {
       res.render('request', {docs})
+    }, err => console.log(err));
+  }
+};
+
+let review = (req, res) => {
+  if(req.user.airline == 'JetBlue'){
+    Brequests.find({isReviewed: {$in: ['Not Reviewed', 'rejected']}}).then( docs => {
+      console.log(docs);
+      res.render('review', {docs})
+    }, err => console.log(err));
+  }else{
+    Arequests.find({isReviewed: {$in: ['Not Reviewed', 'rejected']}}).then( docs => {
+      console.log(docs);
+      res.render('review', {docs})
     }, err => console.log(err));
   }
 };
@@ -505,10 +547,14 @@ let update = (req, res) => {
   app.get('/check/:requestId', ensureAuthenticated, check);
   app.get('/accept/:requestId', ensureAuthenticated, accept);
   app.get('/reject/:requestId', ensureAuthenticated, reject);
+  app.get('/approve/:requestId', ensureAuthenticated, approve);
+  app.get('/disapprove/:requestId', ensureAuthenticated, disapprove);
   app.get('/bookings', ensureAuthenticated,bookings);
   app.get('/requests', ensureAuthenticated,requests);
+  app.get('/review', ensureAuthenticated,review);
   app.get('/responses', ensureAuthenticated,responses);
   app.get('/add', ensureAuthenticated,add);
+  app.get('/admin',ensureAuthenticated,admin);
   app.get('/addbooking', ensureAuthenticated,addbooking);
   app.get('/edit/:flightNumber', ensureAuthenticated,edit);
   app.get('*', notFound);

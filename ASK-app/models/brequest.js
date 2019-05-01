@@ -27,6 +27,11 @@ const brequestsSchema = Schema({
     bookingId: {
         type: mongoose.Schema.Types.ObjectId,
         required: 'This field is required.'
+    },
+    isReviewed: {
+        type: String,
+        default: 'Not Reviewed',
+        required: 'This field is required.'
     }
 });
 

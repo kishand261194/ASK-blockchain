@@ -1,0 +1,44 @@
+<% include partials/head.ejs %>
+<body id='gif'>
+  <% include partials/nav.ejs %>
+  <% include ./partials/messages %>
+  <div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <div class="card card-body">
+      <% if (docs.length > 0) { %>
+        <h4 class="title">Flight change request from passengers! </h4>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>To Airline</th>
+              <th>Flight Number</th>
+              <th>Seats</th>
+              <th>Status</th>
+              <th>Request Approval</th>
+              <th>Approve</th>
+              <th>Reject</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% docs.forEach( request => { %>
+              <tr>
+                <td><%= request.fromAirline %></td>
+                <td><%= request.flightNumber %></td>
+                <td><%= request.seats %></td>
+                <td><%= request.status %></td>
+                <td><%= request.isReviewed %></td>
+                <td><a href="approve/<%= request._id %>"><input type="button" class="btn btn-success" value="Approve"></a></td>
+                <td><a href="disapprove/<%= request._id %>"><input type="button" class="btn btn-danger" value="Disapprove"></a></td>
+             </tr>
+            <% }); %>
+          </tbody>
+        </table>
+        <% } else {  %>
+          <h4>There are no review yet!</h4>
+        <% } %>
+      </div>
+        </div>
+          </div>
+  <% include partials/scripts.ejs %>
+</body>
+</html>
