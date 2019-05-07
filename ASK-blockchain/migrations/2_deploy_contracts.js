@@ -1,5 +1,5 @@
-var Counter= artifacts.require("./Counter.sol");
+var Askconsortium= artifacts.require("./Askconsortium.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(Counter);
+  deployer.deploy(Askconsortium);
 };

@@ -33,6 +33,7 @@ App = {
     // Set the provider for our contract
     App.populateAddress();
     App.contracts.ask.setProvider(App.web3Provider);
+    App.setaddress();
     return App.bindEvents();
   });
   console.log('here3');
@@ -41,6 +42,48 @@ App = {
   bindEvents: function() {
     $(document).on('click', '#register', App.handleRegister);
     $(document).on('click', '#unregister', function(){ var ad = $('#enter_address').val(); App.handleUnregister(ad); });
+    $(document).on('click', '#settlepayment', function(){ var ad = $(this).attr("value2"); App.handleSettlepayment(ad); });
+    $(document).on('click', '#accept', function(val){
+                              $(this).text('processing...');
+                             var id = $(this).attr("value2");
+                             var url = $(this).attr("data-href");
+                             var fromAirline = $('#fromAirline'+id).val();
+                             var flightNumber = $('#flightNumber'+id).val();
+                             var seats = $('#seats'+id).val();
+                             App.handleResponse(fromAirline, seats, flightNumber, 0, url);
+                           });
+     $(document).on('click', '#reject', function(val){
+                              var id = $(this).attr("value2");
+                              var url = $(this).attr("data-href");
+                              var fromAirline = $('#fromAirline'+id).val();
+                              var flightNumber = $('#flightNumber'+id).val();
+                              var seats = $('#seats'+id).val();
+                              App.handleResponse(fromAirline, seats, flightNumber, 1, url);
+                            });
+    $(document).on('click', '#approve', function(val){
+                             var id = $(this).attr("value2");
+                             var url = $(this).attr("data-href");
+                             var toAirline = $('#toAirline'+id).val();
+                             var flightNumber = $('#flightNumber'+id).val();
+                             var seats = $('#seats'+id).val();
+                             App.handleRequest(toAirline, seats, flightNumber, url);
+                           });
+   $(document).on('click', '#disapprove', function(val){
+                            var id = $(this).attr("value2");
+                            var url = $(this).attr("data-href");
+                            var toAirline = $('#toAirline'+id).val();
+                            var flightNumber = $('#flightNumber'+id).val();
+                            var seats = $('#seats'+id).val();
+                            App.handleRequest(toAirline, seats, flightNumber, url);
+                          });
+  },
+
+  setaddress : function(){
+    var userInstance;
+    App.contracts.ask.deployed().then(function(instance) {
+      userInstance = instance;
+      $("#setaddress").val(web3.eth.defaultAccount)
+    })
   },
 
   populateAddress : function(){
@@ -53,6 +96,7 @@ App = {
       });
     });
   },
+
   handleUnregister: function(addr){
     var askArtifact;
     App.contracts.ask.deployed().then(function(instance) {
@@ -89,6 +133,70 @@ console.log(result);
             alert(addr + " registration failed")
         }
     });
+},
+
+handleSettlepayment: function(addr){
+  var userInstance;
+  console.log(addr)
+  App.contracts.ask.deployed().then(function(instance) {
+    userInstance = instance;
+    return userInstance.settlePayment((addr), {to: web3.eth.defaultAccount , value: web3.toWei(2)});
+  }).then(function(result, err){
+      if(result){
+          console.log(result.receipt.status);
+          console.log(result);
+          if(parseInt(result.receipt.status) == 1)
+          alert(addr + " Payment Settlement done successfully")
+          else
+          alert(addr + " Payment Settlement not done successfully due to revert")
+      } else {
+          alert(addr + " Payment Settlement failed")
+      }
+  });
+},
+
+handleResponse: function(fromAirline, seats, flightNumber, status, url){
+  console.log('handle')
+  var userInstance;
+  App.contracts.ask.deployed().then(function(instance) {
+    userInstance = instance;
+    return userInstance.response(fromAirline, seats, flightNumber, status);
+  }).then(function(result, err){
+      if(result){
+          console.log(result.receipt.status);
+          console.log(result);
+          if(parseInt(result.receipt.status) == 1)
+          alert(" Response Added successfully")
+          alert(" User has been notified !!! ")
+          alert(" Response not Added successfully due to revert")
+      } else {
+          alert(" Response failed to add")
+        }
+      window.location=url;
+  });
+
+},
+
+handleRequest: function(toAirline, seats, flightNumber, url){
+  console.log('handleRequest')
+  var userInstance;
+  App.contracts.ask.deployed().then(function(instance) {
+    userInstance = instance;
+    return userInstance.request(toAirline, seats, flightNumber);
+  }).then(function(result, err){
+      if(result){
+          console.log(result.receipt.status);
+          console.log(result);
+          if(parseInt(result.receipt.status) == 1)
+          alert(" Request Added successfully")
+          else
+          alert(" Request not Added successfully due to revert")
+      } else {
+          alert(" Request failed to add")
+      }
+      window.location=url;
+  });
+
 }
 };
 

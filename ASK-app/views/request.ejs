@@ -22,14 +22,13 @@
           <tbody>
             <% docs.forEach( request => { %>
               <tr>
-                <td><%= request.fromAirline %></td>
-                <td><%= request.flightNumber %></td>
-                <td><%= request.seats %></td>
-                <td><%= request.status %></td>
+                <td><option id="fromAirline<%= request._id %>" value="<%= request.fromAirline %>"><%= request.fromAirline %></option></td>
+                <td><option id="flightNumber<%= request._id %>" value="<%= request.flightNumber %>"><%= request.flightNumber %></option></td>
+                <td><option id="seats<%= request._id %>" value="<%= request.seats %>"><%= request.seats %></option></td>
+                <td><option id="status<%= request._id %>" value="<%= request.status %>"><%= request.status %></option></td>
                 <td><a href="check/<%= request._id %>"><input type="button" class="btn btn-info" value="Check"></a></td>
-                <td><a href="accept/<%= request._id %>"><input type="button" class="btn btn-success" value="Accept"></a></td>
-                <td><a href="reject/<%= request._id %>"><input type="button" class="btn btn-danger" value="Reject"></a></td>
-
+                <td><input type="button" id="accept" class="btn btn-success" value2="<%= request._id %>" data-href="/accept/<%= request._id %>" value="Accept"></td>
+                <td><input type="button" class="btn btn-danger" id="reject" value2="<%= request._id %>" value="Reject" data-href="/reject/<%= request._id %>"></td>
              </tr>
             <% }); %>
           </tbody>
@@ -40,6 +39,6 @@
       </div>
         </div>
           </div>
-  <% include partials/scripts.ejs %>
+  <% include partials/bcscripts.ejs %>
 </body>
 </html>

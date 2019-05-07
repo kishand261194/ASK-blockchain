@@ -21,9 +21,9 @@ let register = (req, res) => res.render('register');
 let registercust = (req, res) => res.render('registercust');
 let admin = (req, res) => res.render('admin');
 let addUser = (req, res) => {
-  const { name, email, password, password2, airline } = req.body;
+  const { name, email, password, password2, airline, address } = req.body;
   let errors = [];
-  if (!name || !email || !password || !password2 || !airline) {
+  if (!name || !email || !password || !password2 || !airline || !address) {
     errors.push({ msg: 'Please enter all fields' });
   }
 
@@ -42,7 +42,8 @@ let addUser = (req, res) => {
       email,
       password,
       password2,
-      airline
+      airline,
+      address
     });
   } else {
     User.findOne({ email: email }).then(user => {
@@ -54,14 +55,16 @@ let addUser = (req, res) => {
           email,
           password,
           password2,
-          airline
+          airline,
+          address
         });
       } else {
         const newUser = new User({
           name,
           email,
           password,
-          airline
+          airline,
+          address
         });
 
         bcrypt.genSalt(10, (err, salt) => {
@@ -231,7 +234,7 @@ let accept = (req, res) => {
           Arequests.update({_id: docs._id}, {status: 'accepted'}, err => {
             if (!err) console.log('Updated!');
           });
-          Aflights.findOneAndUpdate({airline: docs.toAirline, flightNumber:docs.flightNumber}, {inc: {filledSeat: docs.seats}},{ new: true }, err => {
+          Aflights.findOneAndUpdate({airline: docs.toAirline, flightNumber:docs.flightNumber}, {$inc: {filledSeat: docs.seats}},{ new: true }, err => {
             if (!err) console.log('Updated flight!');
           });
           let response = {status: 'accept', bookingId: docs.bookingId};
@@ -328,6 +331,45 @@ let disapprove = (req, res) => {
 };
 
 
+let verify = (req, res) => {
+  Bookings.findById(req.params.bookingId).then(booking => {
+    console.log(booking);
+    if(booking.airline == 'JetBlue'){
+      Aflights.findById({flightNumber: booking.flightNumber}).then( flight => {
+        if(flight){
+          req.flash(
+            'success_msg',
+            'Request verified and Validated'
+          );
+        }else{
+          req.flash(
+            'error_msg',
+            'Failed verify and Validate'
+          );
+        }
+        res.redirect('/review');
+      }, err => res.status(404).send('Error!'));
+    }else{
+      console.log(booking.flightNumber)
+      Bflights.findOne({flightNumber: booking.flightNumber}).then( flight => {
+        if(flight){
+          req.flash(
+            'success_msg',
+            'Request verified and Validated'
+          );
+        }else{
+          req.flash(
+            'error_msg',
+            'Failed verify and Validate'
+          );
+        }
+        res.redirect('/review');
+      }, err => res.status(404).send('Error!'));
+    }
+  });
+};
+
+
 let flights = (req, res) => {
   if(req.user.airline == 'JetBlue'){
     Aflights.find().then( docs => {
@@ -368,9 +410,9 @@ let requests = (req, res) => {
     Arequests.find({isReviewed: 'approved'}).then( docs => {
       res.render('request', {docs})
     }, err => console.log(err));
-  }else{
-    Brequests.find({isReviewed: 'approved'}).then( docs => {
-      res.render('request', {docs})
+  } else{
+     Brequests.find({isReviewed: 'approved'}).then( docs => {
+     res.render('request', {docs})
     }, err => console.log(err));
   }
 };
@@ -378,12 +420,10 @@ let requests = (req, res) => {
 let review = (req, res) => {
   if(req.user.airline == 'JetBlue'){
     Brequests.find({isReviewed: {$in: ['Not Reviewed', 'rejected']}}).then( docs => {
-      console.log(docs);
       res.render('review', {docs})
     }, err => console.log(err));
   }else{
     Arequests.find({isReviewed: {$in: ['Not Reviewed', 'rejected']}}).then( docs => {
-      console.log(docs);
       res.render('review', {docs})
     }, err => console.log(err));
   }
@@ -394,12 +434,17 @@ let responses = (req, res) => {
 
   if(req.user.airline == 'JetBlue'){
     Aresponse.find().then( docs => {
-      console.log(docs)
-      res.render('response', {docs})
+      User.findOne({airline: 'SurfAir'}).then(docs2 => {
+        let add = docs2.address;
+        res.render('response', {docs, add}) })
     }, err => console.log(err));
-  }else{
+  }
+  else{
     Bresponse.find().then( docs => {
-      res.render('response', {docs})
+      User.findOne({airline: 'JetBlue'}).then(docs2 => {
+        let add = docs2.address;
+        console.log()
+        res.render('response', {docs, add}) })
     }, err => console.log(err));
   }
 };
@@ -525,16 +570,41 @@ let saveresponse = (req, res) => {
 
   }
 
-}
+};
+
+let updatebooking = (req, res) => {
+  console.log('crap')
+  Bookings.findById(req.params.bookingId).then(booking => {
+    if(booking.airline == 'JetBlue'){
+      Aflights.findOneAndUpdate({flightNumber:booking.flightNumber}, {$inc: {filledSeat: -booking.seats}},{ new: true }, err => {
+        if (!err) console.log('Updated flight!');
+      });
+    }else{
+      Bflights.findOneAndUpdate({flightNumber:booking.flightNumber}, {$inc: {filledSeat: -booking.seats}},{ new: true }, err => {
+        if (!err) console.log('Updated flight!');
+      });
+    }
+
+  });
+  res.redirect('/responses');
+};
 
 
 let update = (req, res) => {
   let data = {flightNumber: req.body.flightNumber, totalSeats: req.body.totalSeats, filledSeat:  req.body.filledSeat, airline: req.body.airline};
   let query = {_id: req.params.flightNumber};
-  Flights.update(query, data, err => {
-    if (!err) console.log('Updated!');
-  })
-  res.redirect('/flights');
+  if (req.user.airline == 'JetBlue'){
+    Aflights.update(query, data, err => {
+      if (!err) console.log('Updated!');
+    })
+    res.redirect('/flights');
+  }else{
+    Bflights.update(query, data, err => {
+      if (!err) console.log('Updated!');
+    })
+    res.redirect('/flights');
+
+  }
 };
 
 
@@ -549,12 +619,14 @@ let update = (req, res) => {
   app.get('/reject/:requestId', ensureAuthenticated, reject);
   app.get('/approve/:requestId', ensureAuthenticated, approve);
   app.get('/disapprove/:requestId', ensureAuthenticated, disapprove);
+  app.get('/updatebooking/:bookingId', ensureAuthenticated,updatebooking);
   app.get('/bookings', ensureAuthenticated,bookings);
   app.get('/requests', ensureAuthenticated,requests);
   app.get('/review', ensureAuthenticated,review);
   app.get('/responses', ensureAuthenticated,responses);
   app.get('/add', ensureAuthenticated,add);
   app.get('/admin',ensureAuthenticated,admin);
+  app.get('/verify/:bookingId',ensureAuthenticated,verify);
   app.get('/addbooking', ensureAuthenticated,addbooking);
   app.get('/edit/:flightNumber', ensureAuthenticated,edit);
   app.get('*', notFound);

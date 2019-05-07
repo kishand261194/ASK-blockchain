@@ -6,12 +6,14 @@
     <div class="col-md-6 m-auto">
       <div class="card card-body">
       <% if (docs.length > 0) { %>
-        <h4 class="title"><%= docs[0].toAirline %> reservation response</h4>
+        <h4 class="title">Reservation response</h4>
         <table class="table table-hover">
           <thead>
             <tr>
               <th>Booking Id</th>
               <th>Status</th>
+              <th>Update our Flight</th>
+              <th>Settle Payment</th>
             </tr>
           </thead>
           <tbody>
@@ -19,6 +21,10 @@
               <tr>
                 <td><%= response.bookingId %></td>
                 <td><%= response.status %></td>
+                <% if (response.status == 'accept') { %>
+                  <td><a href="updatebooking/<%= response.bookingId %>"><input type="button" class="btn btn-info" value="Update"></a></td>
+                  <td><button class="btn btn-danger" type="button" id="settlepayment" value2 = "<%= add %>"> Settle Payment </button></td>
+                <% } %>
              </tr>
             <% }); %>
           </tbody>
@@ -29,6 +35,6 @@
       </div>
         </div>
           </div>
-  <% include partials/scripts.ejs %>
+  <% include partials/bcscripts.ejs %>
 </body>
 </html>
