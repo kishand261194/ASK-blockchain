@@ -335,7 +335,7 @@ let verify = (req, res) => {
   Bookings.findById(req.params.bookingId).then(booking => {
     console.log(booking);
     if(booking.airline == 'JetBlue'){
-      Aflights.findById({flightNumber: booking.flightNumber}).then( flight => {
+      Aflights.findOne({flightNumber: booking.flightNumber}).then( flight => {
         if(flight){
           req.flash(
             'success_msg',

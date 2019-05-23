@@ -46,7 +46,11 @@ contract Askconsortium {
         _;
     }
 
-    
+    event Deposit(
+      address from,
+      uint value
+    );
+
     constructor() public payable {
         chairperson = msg.sender;
         airlines[chairperson].active = true;
@@ -91,6 +95,7 @@ contract Askconsortium {
 
     function replenish() public checkIfactive payable{
         airlines[msg.sender].escrow += msg.value;
+        emit Deposit(msg.sender, msg.value);
     }
 
     function viewBalance() public checkIfactive view returns (uint) {
